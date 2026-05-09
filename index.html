@@ -423,6 +423,95 @@
       letter-spacing: 0.02em;
     }
 
+    /* ── フィードバック ── */
+    .feedback-zone {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .feedback-heading {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .feedback-sub {
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+      margin-bottom: 16px;
+    }
+    .issue-checks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      margin-bottom: 14px;
+    }
+    .issue-checks label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+      color: var(--ink);
+      cursor: pointer;
+    }
+    #feedback-comment {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 10px 12px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.85rem;
+      color: var(--ink);
+      resize: vertical;
+      min-height: 64px;
+      background: var(--surface);
+      margin-bottom: 12px;
+    }
+    #feedback-create-btn {
+      padding: 10px 20px;
+      background: transparent;
+      color: var(--ink-muted);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    #feedback-create-btn:hover { border-color: var(--ink-muted); color: var(--ink); }
+    #feedback-memo {
+      display: block;
+      width: 100%;
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 10px 12px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+      background: var(--surface);
+      resize: none;
+      min-height: 96px;
+    }
+    #feedback-submit-btn {
+      margin-top: 10px;
+      padding: 10px 24px;
+      background: var(--ink);
+      color: white;
+      border: none;
+      border-radius: 2px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #feedback-submit-btn:hover { background: #333; }
+    #feedback-done {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: var(--success);
+    }
+
     /* ── レスポンシブ ── */
     @media (max-width: 600px) {
       header { padding: 24px 20px 20px; }
@@ -545,6 +634,27 @@
     <div class="download-zone">
       <p class="download-note">全件プレビューで内容を確認してからダウンロードしてください</p>
       <button id="download-btn" onclick="doDownload()">CSVをダウンロード</button>
+    </div>
+
+    <div class="feedback-zone">
+      <p class="feedback-heading">変換結果はいかがでしたか？</p>
+      <p class="feedback-sub">個人情報なしで改善にご協力いただけます。うまく変換できなかった項目があればチェックしてください。</p>
+      <div class="issue-checks">
+        <label><input type="checkbox" value="氏名"> 氏名</label>
+        <label><input type="checkbox" value="ふりがな"> ふりがな</label>
+        <label><input type="checkbox" value="郵便番号"> 郵便番号</label>
+        <label><input type="checkbox" value="住所"> 住所</label>
+        <label><input type="checkbox" value="電話番号"> 電話番号</label>
+        <label><input type="checkbox" value="メール"> メール</label>
+        <label><input type="checkbox" value="会社・部署"> 会社・部署</label>
+      </div>
+      <textarea id="feedback-comment" placeholder="その他、気になった点があればご記入ください（任意）"></textarea>
+      <button id="feedback-create-btn" onclick="createFeedbackMemo()">改善メモを作成</button>
+      <textarea id="feedback-memo" readonly placeholder="「改善メモを作成」を押すと、送信内容（個人情報なし）が表示されます"></textarea>
+      <div id="feedback-actions" style="display:none;">
+        <button id="feedback-submit-btn" onclick="submitFeedback()">送信する</button>
+      </div>
+      <p id="feedback-done" style="display:none;">ありがとうございました。改善に活用します。</p>
     </div>
   </div>
 
@@ -860,6 +970,44 @@ function doConvert() {
   previewFormatTag.textContent = dstFmt.name;
   previewSection.style.display = 'block';
   previewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+const FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSc5cMbflT-uHf-D0_xoo4IOxQVz5cOR-VQVeG3cJdPyWRPQqQ/formResponse';
+
+function createFeedbackMemo() {
+  const issues = [...document.querySelectorAll('.issue-checks input:checked')].map(cb => cb.value);
+  const srcName = detectedFormatKey ? FORMATS[detectedFormatKey].name : '不明';
+  const dstName = FORMATS[selectedFormatKey].name;
+  const csvHeaders = parsedData ? parsedData.headers.join('、') : '';
+  document.getElementById('feedback-memo').value = [
+    `入力元ソフト: ${srcName}`,
+    `出力先ソフト: ${dstName}`,
+    `うまくいかなかった項目: ${issues.length ? issues.join('、') : 'なし'}`,
+    `CSVの列名: ${csvHeaders}`,
+  ].join('\n');
+  document.getElementById('feedback-actions').style.display = 'block';
+}
+
+function submitFeedback() {
+  const issues = [...document.querySelectorAll('.issue-checks input:checked')].map(cb => cb.value);
+  const srcName = detectedFormatKey ? FORMATS[detectedFormatKey].name : '不明';
+  const dstName = FORMATS[selectedFormatKey].name;
+  const csvHeaders = parsedData ? parsedData.headers.join('、') : '';
+  const comment = document.getElementById('feedback-comment').value;
+  fetch(FORM_ACTION, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      'entry.50698499': srcName,
+      'entry.354400431': dstName,
+      'entry.1598504127': issues.length ? issues.join('、') : 'なし',
+      'entry.855067757': csvHeaders,
+      'entry.234277430': comment,
+    }).toString(),
+  });
+  document.getElementById('feedback-submit-btn').style.display = 'none';
+  document.getElementById('feedback-done').style.display = 'block';
 }
 
 function doDownload() {
