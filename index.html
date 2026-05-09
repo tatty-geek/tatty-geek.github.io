@@ -467,34 +467,21 @@
       background: var(--surface);
       margin-bottom: 12px;
     }
-    #feedback-create-btn {
-      padding: 10px 20px;
-      background: transparent;
-      color: var(--ink-muted);
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      font-family: 'Noto Sans JP', sans-serif;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    #feedback-create-btn:hover { border-color: var(--ink-muted); color: var(--ink); }
-    #feedback-memo {
-      display: block;
+    #feedback-comment {
       width: 100%;
       margin-top: 12px;
       border: 1px solid var(--border);
       border-radius: 2px;
       padding: 10px 12px;
       font-family: 'Noto Sans JP', sans-serif;
-      font-size: 0.82rem;
-      color: var(--ink-muted);
+      font-size: 0.85rem;
+      color: var(--ink);
+      resize: vertical;
+      min-height: 64px;
       background: var(--surface);
-      resize: none;
-      min-height: 96px;
     }
     #feedback-submit-btn {
-      margin-top: 10px;
+      margin-top: 12px;
       padding: 10px 24px;
       background: var(--ink);
       color: white;
@@ -649,11 +636,7 @@
         <label><input type="checkbox" value="会社・部署"> 会社・部署</label>
       </div>
       <textarea id="feedback-comment" placeholder="その他、気になった点があればご記入ください（任意）"></textarea>
-      <button id="feedback-create-btn" onclick="createFeedbackMemo()">改善メモを作成</button>
-      <textarea id="feedback-memo" readonly placeholder="「改善メモを作成」を押すと、送信内容（個人情報なし）が表示されます"></textarea>
-      <div id="feedback-actions" style="display:none;">
-        <button id="feedback-submit-btn" onclick="submitFeedback()">送信する</button>
-      </div>
+      <button id="feedback-submit-btn" onclick="submitFeedback()">送信する</button>
       <p id="feedback-done" style="display:none;">ありがとうございました。改善に活用します。</p>
     </div>
   </div>
@@ -974,19 +957,6 @@ function doConvert() {
 
 const FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSc5cMbflT-uHf-D0_xoo4IOxQVz5cOR-VQVeG3cJdPyWRPQqQ/formResponse';
 
-function createFeedbackMemo() {
-  const issues = [...document.querySelectorAll('.issue-checks input:checked')].map(cb => cb.value);
-  const srcName = detectedFormatKey ? FORMATS[detectedFormatKey].name : '不明';
-  const dstName = FORMATS[selectedFormatKey].name;
-  const csvHeaders = parsedData ? parsedData.headers.join('、') : '';
-  document.getElementById('feedback-memo').value = [
-    `入力元ソフト: ${srcName}`,
-    `出力先ソフト: ${dstName}`,
-    `うまくいかなかった項目: ${issues.length ? issues.join('、') : 'なし'}`,
-    `CSVの列名: ${csvHeaders}`,
-  ].join('\n');
-  document.getElementById('feedback-actions').style.display = 'block';
-}
 
 function submitFeedback() {
   const issues = [...document.querySelectorAll('.issue-checks input:checked')].map(cb => cb.value);
