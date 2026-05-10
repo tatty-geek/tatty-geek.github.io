@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>住所録変換 — 筆まめ・筆ぐるめ・はがきデザインキット対応</title>
-  <meta name="description" content="筆まめ・筆ぐるめ・はがきデザインキットなど年賀状ソフトの住所録CSVを無料で相互変換。ファイルをアップロードするだけで自動変換。">
-  <meta property="og:title" content="住所録変換 — 筆まめ・筆ぐるめ・はがきデザインキット対応">
-  <meta property="og:description" content="筆まめ・筆ぐるめ・はがきデザインキットなど年賀状ソフトの住所録CSVを無料で相互変換。ファイルをアップロードするだけで自動変換。">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>ふでコン — 年賀状ソフトの住所録を無料変換 | 筆まめ・筆ぐるめ・筆王対応</title>
+  <meta name="description" content="筆まめ・筆ぐるめ・筆王・はがきデザインキットなど年賀状ソフトの住所録CSVを無料で相互変換。OutlookやGmailへの書き出しにも対応。ファイルをアップロードするだけで自動変換。">
+  <meta property="og:title" content="ふでコン — 年賀状ソフトの住所録を無料変換">
+  <meta property="og:description" content="筆まめ・筆ぐるめ・筆王・はがきデザインキットなど年賀状ソフトの住所録CSVを無料で相互変換。OutlookやGmailへの書き出しにも対応。">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://tatty-geek.github.io/csv-converter/">
+  <meta property="og:url" content="https://tatty-geek.github.io/">
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="住所録変換 — 筆まめ・筆ぐるめ・はがきデザインキット対応">
-  <meta name="twitter:description" content="筆まめ・筆ぐるめ・はがきデザインキットなど年賀状ソフトの住所録CSVを無料で相互変換。ファイルをアップロードするだけで自動変換。">
+  <meta name="twitter:title" content="ふでコン — 年賀状ソフトの住所録を無料変換">
+  <meta name="twitter:description" content="筆まめ・筆ぐるめ・筆王・はがきデザインキットなど年賀状ソフトの住所録CSVを無料で相互変換。OutlookやGmailへの書き出しにも対応。">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7399421628479973" crossorigin="anonymous"></script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ8STL0984"></script>
@@ -31,7 +32,7 @@
       --ink-muted: #4a4a4a;
       --ink-light: #999;
       --accent: #b8332a;
-      --bg: #ffffff;
+      --bg: #fefdfb;
       --surface: #fafaf9;
       --border: #e8e8e5;
       --success: #2d7a4f;
@@ -127,6 +128,48 @@
       color: var(--accent);
       letter-spacing: 0.08em;
       text-transform: uppercase;
+    }
+    .step-badge {
+      font-family: 'Shippori Mincho B1', serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: white;
+      background: var(--accent);
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      letter-spacing: 0;
+    }
+    /* ── ロゴアクセント ── */
+    .logo-accent {
+      color: var(--accent);
+      position: relative;
+    }
+    .logo-accent::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 1px;
+      opacity: 0.4;
+    }
+    /* ── フォーマットグループ ── */
+    .format-group { margin-bottom: 8px; }
+    .format-group + .format-group { margin-top: 20px; }
+    .format-group-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--ink-light);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
     }
     .section-title {
       font-size: 0.95rem;
@@ -293,6 +336,39 @@
       cursor: not-allowed;
       transform: none;
     }
+    #convert-btn.done { background: var(--success); }
+    #convert-btn.done:hover:not(:disabled) { background: #245f3d; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .btn-spinner {
+      display: inline-block;
+      width: 13px;
+      height: 13px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+      visibility: hidden;
+    }
+    #convert-btn.loading .btn-spinner { visibility: visible; }
+
+    /* ── ドロップゾーン パルス ── */
+    @keyframes pulse-zone {
+      0%, 100% { border-color: var(--border); background: var(--surface); box-shadow: none; }
+      50% { border-color: var(--accent); background: #fff5f4; box-shadow: 0 0 0 4px rgba(184,51,42,0.08); }
+    }
+    #drop-zone.idle { animation: pulse-zone 2s ease-in-out 3; }
+
+    /* ── 和紙テクスチャ ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    }
 
     /* ── プレビューテーブル共通 ── */
     .table-label {
@@ -390,6 +466,17 @@
       transition: background 0.2s, transform 0.15s;
     }
     #download-btn:hover { background: #245f3d; transform: translateY(-1px); }
+    @keyframes dl-appear {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes dl-glow {
+      0%, 100% { box-shadow: 0 2px 8px rgba(45,122,79,0.2); }
+      50%       { box-shadow: 0 2px 20px rgba(45,122,79,0.55); }
+    }
+    #download-btn.appear {
+      animation: dl-appear 0.35s ease forwards, dl-glow 1.1s ease 0.4s 3;
+    }
 
     /* ── 使い方 ── */
     .howto-list {
@@ -508,6 +595,42 @@
       color: var(--success);
     }
 
+    /* ── 安心ポイント ── */
+    .trust-bar {
+      display: flex;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 48px;
+    }
+    .trust-item {
+      flex: 1;
+      background: var(--surface);
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .trust-icon {
+      flex-shrink: 0;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+    .trust-text {
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+    .trust-text strong {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+
     /* ── レスポンシブ ── */
     @media (max-width: 600px) {
       header { padding: 24px 20px 20px; }
@@ -516,6 +639,7 @@
       .format-grid { grid-template-columns: repeat(2, 1fr); }
       .download-zone { flex-direction: column; align-items: stretch; }
       #download-btn { text-align: center; }
+      .trust-bar { flex-direction: column; }
     }
   </style>
 </head>
@@ -523,22 +647,44 @@
 
 <header>
   <div class="header-inner">
-    <h1>住所録変換</h1>
-    <p>筆まめ・筆ぐるめ・はがきデザインキット 対応</p>
+    <h1><span class="logo-accent">ふで</span>コン</h1>
+    <p>年賀状ソフトの住所録を変換 — 筆まめ・筆ぐるめ・筆王・Outlook・Gmail 対応</p>
   </div>
 </header>
 
 <main>
 
+  <!-- 安心ポイント -->
+  <div class="trust-bar fade-up">
+    <div class="trust-item">
+      <svg class="trust-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      <span class="trust-text"><strong>データはサーバーに送信されません</strong>すべての変換処理はブラウザ内で完結します</span>
+    </div>
+    <div class="trust-item">
+      <svg class="trust-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><polyline points="16 8 12 12 8 8"/><line x1="12" y1="12" x2="12" y2="16"/>
+      </svg>
+      <span class="trust-text"><strong>完全無料</strong>登録不要、制限なしで使えます</span>
+    </div>
+    <div class="trust-item">
+      <svg class="trust-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <span class="trust-text"><strong>Outlook・Gmailは英語の列名で出力</strong>各ソフトのインポート機能が自動で認識します</span>
+    </div>
+  </div>
+
   <!-- STEP 1 -->
   <div class="section fade-up">
     <div class="section-label">
-      <span class="step-num">Step 01</span>
+      <span class="step-badge">01</span>
       <span class="section-title">CSVファイルをアップロード</span>
       <span class="section-divider"></span>
     </div>
 
-    <div id="drop-zone" onclick="document.getElementById('file-input').click()">
+    <div id="drop-zone" class="idle" onclick="document.getElementById('file-input').click()">
       <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
         <polyline points="17 8 12 3 7 8"/>
@@ -564,35 +710,55 @@
   <!-- STEP 2 -->
   <div class="section fade-up">
     <div class="section-label">
-      <span class="step-num">Step 02</span>
+      <span class="step-badge">02</span>
       <span class="section-title">変換先のソフトを選択</span>
       <span class="section-divider"></span>
     </div>
 
-    <div class="format-grid">
-      <div class="format-btn" data-format="fudemame" onclick="selectFormat(this)">
-        <div class="soft-name">筆まめ</div>
-        <div class="soft-desc">デスクトップ版</div>
+    <div class="format-group">
+      <p class="format-group-label">年賀状ソフト</p>
+      <div class="format-grid">
+        <div class="format-btn" data-format="fudemame" onclick="selectFormat(this)">
+          <div class="soft-name">筆まめ</div>
+          <div class="soft-desc">デスクトップ版</div>
+        </div>
+        <div class="format-btn" data-format="fudemame_cloud" onclick="selectFormat(this)">
+          <div class="soft-name">筆まめクラウド</div>
+          <div class="soft-desc">クラウド版</div>
+        </div>
+        <div class="format-btn" data-format="fudegurume" onclick="selectFormat(this)">
+          <div class="soft-name">筆ぐるめ</div>
+          <div class="soft-desc">Ver.20〜最新版</div>
+        </div>
+        <div class="format-btn" data-format="hagaki" onclick="selectFormat(this)">
+          <div class="soft-name">はがきデザインキット</div>
+          <div class="soft-desc">2020〜2024年版</div>
+        </div>
+        <div class="format-btn" data-format="fudeoh" onclick="selectFormat(this)">
+          <div class="soft-name">筆王</div>
+          <div class="soft-desc">Web・デスクトップ版</div>
+        </div>
+        <div class="format-btn" data-format="atena" onclick="selectFormat(this)">
+          <div class="soft-name">宛名職人</div>
+          <div class="soft-desc">Ver.20〜最新版</div>
+        </div>
       </div>
-      <div class="format-btn" data-format="fudemame_cloud" onclick="selectFormat(this)">
-        <div class="soft-name">筆まめクラウド</div>
-        <div class="soft-desc">クラウド版</div>
-      </div>
-      <div class="format-btn" data-format="fudegurume" onclick="selectFormat(this)">
-        <div class="soft-name">筆ぐるめ</div>
-        <div class="soft-desc">Ver.20〜最新版</div>
-      </div>
-      <div class="format-btn" data-format="hagaki" onclick="selectFormat(this)">
-        <div class="soft-name">はがきデザインキット</div>
-        <div class="soft-desc">2020〜2024年版</div>
-      </div>
-      <div class="format-btn" data-format="atena" onclick="selectFormat(this)">
-        <div class="soft-name">宛名職人</div>
-        <div class="soft-desc">Ver.20〜最新版</div>
-      </div>
-      <div class="format-btn" data-format="excel" onclick="selectFormat(this)">
-        <div class="soft-name">Excel 汎用</div>
-        <div class="soft-desc">整理・編集用</div>
+    </div>
+    <div class="format-group">
+      <p class="format-group-label">メール・汎用</p>
+      <div class="format-grid">
+        <div class="format-btn" data-format="excel" onclick="selectFormat(this)">
+          <div class="soft-name">Excel 汎用</div>
+          <div class="soft-desc">整理・編集用</div>
+        </div>
+        <div class="format-btn" data-format="outlook" onclick="selectFormat(this)">
+          <div class="soft-name">Outlook</div>
+          <div class="soft-desc">Windows連絡先</div>
+        </div>
+        <div class="format-btn" data-format="gmail" onclick="selectFormat(this)">
+          <div class="soft-name">Gmail</div>
+          <div class="soft-desc">Googleコンタクト</div>
+        </div>
       </div>
     </div>
   </div>
@@ -600,17 +766,17 @@
   <!-- STEP 3 -->
   <div class="section fade-up">
     <div class="section-label">
-      <span class="step-num">Step 03</span>
+      <span class="step-badge">03</span>
       <span class="section-title">変換してプレビュー確認</span>
       <span class="section-divider"></span>
     </div>
-    <button id="convert-btn" disabled onclick="doConvert()">変換してプレビューを表示</button>
+    <button id="convert-btn" disabled onclick="doConvert()"><span class="btn-spinner"></span>変換してプレビューを表示</button>
   </div>
 
   <!-- 変換後プレビュー（全件） -->
   <div class="section fade-up" id="preview-section">
     <div class="section-label">
-      <span class="step-num">Step 04</span>
+      <span class="step-badge">04</span>
       <span class="section-title">内容を確認してダウンロード</span>
       <span class="section-divider"></span>
     </div>
@@ -662,12 +828,11 @@
       <li>全件プレビューで内容を確認してからCSVをダウンロード</li>
       <li>ダウンロードしたCSVを変換先ソフトにインポートする</li>
     </ol>
-    <p class="privacy-note">※ すべての処理はブラウザ内で完結します。住所録データはサーバーに送信されません。</p>
   </div>
 
 </main>
 
-<footer>© 2026 住所録変換 &ensp;|&ensp; 個人情報はサーバーに送信されません &ensp;|&ensp; <a href="/csv-converter/privacy.html" style="color:inherit;" target="_blank" rel="noopener">プライバシーポリシー</a></footer>
+<footer>© 2026 ふでコン &ensp;|&ensp; 個人情報はサーバーに送信されません &ensp;|&ensp; <a href="/privacy.html" style="color:inherit;" target="_blank" rel="noopener">プライバシーポリシー</a></footer>
 
 <script>
 const FORMATS = {
@@ -699,11 +864,14 @@ const FORMATS = {
   },
   fudegurume: {
     name: '筆ぐるめ',
-    headers: ['氏名','氏名ふりがな','敬称','連名1','連名1ふりがな','連名2','連名2ふりがな','郵便番号','住所','住所（番地以降）','電話番号','FAX番号','携帯電話番号','メールアドレス','会社名','会社名ふりがな','部署名','役職名','グループ名','備考'],
-    detect: ['氏名ふりがな', '住所（番地以降）'],
+    headers: ['氏名（姓）','氏名（名）','フリガナ','敬称','連名','郵便番号','住所','電話番号','FAX番号','携帯電話番号','メールアドレス','会社名','部署名','役職名','グループ名','備考'],
+    detect: ['フリガナ', '住所', '氏名（姓）'],
     map: {
-      '氏名': 'fullname', '氏名ふりがな': 'reading', '敬称': 'honorific',
-      '連名1': 'joint1', '連名2': 'joint2',
+      '氏名（姓）': 'lastname', '氏名（名）': 'firstname',
+      'フリガナ': 'reading',
+      '氏名': 'fullname', '氏名ふりがな': 'reading',
+      '敬称': 'honorific',
+      '連名': 'joint1', '連名1': 'joint1', '連名2': 'joint2',
       '郵便番号': 'zip', '住所': 'addr1', '住所（番地以降）': 'addr2',
       '電話番号': 'tel', 'FAX番号': 'fax', '携帯電話番号': 'mobile', 'メールアドレス': 'email',
       '会社名': 'company', '部署名': 'dept', '役職名': 'title', 'グループ名': 'group', '備考': 'memo',
@@ -719,6 +887,32 @@ const FORMATS = {
       '敬称': 'honorific', '連名（姓）': 'joint1_last', '連名（名）': 'joint1_first', '連名敬称': 'joint1_honorific',
       '郵便番号': 'zip', '都道府県': 'pref', '市区町村': 'city', '番地': 'street', '建物・部屋番号': 'building',
       '電話番号': 'tel', 'グループ名': 'group',
+    }
+  },
+  fudeoh: {
+    name: '筆王',
+    headers: ['姓', '名', '姓（カナ）', '名（カナ）', '敬称', '郵便番号', '住所1', '住所2', '会社名', '部署名1', '部署名2', '役職', 'メモ', '連名1', '連名2', '連名3', '連名4', '連名5', '連名敬称1', '連名敬称2', '連名敬称3', '連名敬称4', '連名敬称5'],
+    detect: ['姓（カナ）', '名（カナ）', '電子メール', '携帯番号'],
+    map: {
+      // Web版（みんなの筆王）
+      '姓': 'lastname', '名': 'firstname',
+      '姓（カナ）': 'last_reading', '名（カナ）': 'first_reading',
+      '住所1': 'addr1', '住所2': 'addr2',
+      '部署名1': 'dept',
+      '連名1': 'joint1', '連名2': 'joint2', '連名3': 'joint3',
+      '連名敬称1': 'joint1_honorific',
+      // デスクトップ版（best guess）
+      '氏名': 'fullname', 'フリガナ': 'reading',
+      '住所': 'addr1',
+      '電話': 'tel', 'FAX': 'fax', '携帯番号': 'mobile',
+      '電子メール': 'email',
+      '部署名': 'dept',
+      // 共通
+      '敬称': 'honorific',
+      '郵便番号': 'zip',
+      '会社名': 'company',
+      '役職': 'title',
+      'メモ': 'memo',
     }
   },
   atena: {
@@ -746,7 +940,56 @@ const FORMATS = {
       '電話番号': 'tel', 'FAX': 'fax', '携帯': 'mobile', 'メールアドレス': 'email',
       '会社名': 'company', '部署名': 'dept', '役職名': 'title', 'グループ': 'group', 'メモ': 'memo',
     }
-  }
+  },
+  outlook: {
+    name: 'Outlook / Windows連絡先',
+    headers: ['First Name', 'Last Name', 'E-mail Address', 'Home Phone', 'Mobile Phone', 'Home Fax', 'Home Street', 'Home Postal Code', 'Home Country/Region', 'Company', 'Department', 'Job Title', 'Notes'],
+    detect: ['E-mail Address', 'Home Street', 'Home Phone'],
+    map: {
+      'First Name': 'firstname',
+      'Last Name': 'lastname',
+      'E-mail Address': 'email',
+      'Home Phone': 'tel',
+      'Mobile Phone': 'mobile',
+      'Home Fax': 'fax',
+      'Home Street': 'full_addr',
+      'Home Postal Code': 'zip',
+      'Company': 'company',
+      'Department': 'dept',
+      'Job Title': 'title',
+      'Notes': 'memo',
+    },
+    fixed: { 'Home Country/Region': 'Japan' },
+  },
+  gmail: {
+    name: 'Gmail（Googleコンタクト）',
+    headers: ['Name', 'Given Name', 'Additional Name', 'Family Name', 'Given Name Yomi', 'Family Name Yomi', 'E-mail 1 - Type', 'E-mail 1 - Value', 'Phone 1 - Type', 'Phone 1 - Value', 'Phone 2 - Type', 'Phone 2 - Value', 'Address 1 - Type', 'Address 1 - Street', 'Address 1 - Postal Code', 'Address 1 - Country', 'Organization 1 - Type', 'Organization 1 - Name', 'Organization 1 - Title', 'Organization 1 - Department', 'Notes'],
+    detect: ['Given Name', 'Family Name', 'E-mail 1 - Value'],
+    map: {
+      'Name': 'fullname',
+      'Given Name': 'firstname',
+      'Family Name': 'lastname',
+      'Given Name Yomi': 'first_reading',
+      'Family Name Yomi': 'last_reading',
+      'E-mail 1 - Value': 'email',
+      'Phone 1 - Value': 'tel',
+      'Phone 2 - Value': 'mobile',
+      'Address 1 - Street': 'full_addr',
+      'Address 1 - Postal Code': 'zip',
+      'Organization 1 - Name': 'company',
+      'Organization 1 - Title': 'title',
+      'Organization 1 - Department': 'dept',
+      'Notes': 'memo',
+    },
+    fixed: {
+      'E-mail 1 - Type': '* Home',
+      'Phone 1 - Type': 'Home Phone',
+      'Phone 2 - Type': 'Mobile Phone',
+      'Address 1 - Type': 'Home',
+      'Address 1 - Country': 'Japan',
+      'Organization 1 - Type': 'Work',
+    },
+  },
 };
 
 function toUniversal(row, srcFormat) {
@@ -780,12 +1023,18 @@ function toUniversal(row, srcFormat) {
     uni.joint1 = (uni.joint1_last || '') + (uni.joint1_first ? '　' + uni.joint1_first : '');
   if (!uni.joint2 && (uni.joint2_last || uni.joint2_first))
     uni.joint2 = (uni.joint2_last || '') + (uni.joint2_first ? '　' + uni.joint2_first : '');
+  // Outlook/Gmail用：住所をひとつの文字列に結合
+  const _addrParts = [uni.pref, uni.city, uni.city1, uni.city2, uni.street, uni.building].filter(Boolean);
+  uni.full_addr = _addrParts.length ? _addrParts.join('') : [uni.addr1, uni.addr2].filter(Boolean).join('　');
   return uni;
 }
 
 function fromUniversal(uni, dstFormat) {
   const out = {};
   for (const [dstKey, uniKey] of Object.entries(dstFormat.map)) out[dstKey] = uni[uniKey] || '';
+  if (dstFormat.fixed) {
+    for (const [dstKey, val] of Object.entries(dstFormat.fixed)) out[dstKey] = val;
+  }
   return out;
 }
 
@@ -827,12 +1076,16 @@ function toCSV(headers, rows) {
 
 function detectFormat(headers) {
   const hSet = new Set(headers.map(h => h.trim()));
-  let best = null, bestScore = 0;
+  let best = null, bestScore = 0, bestTotal = 0;
   for (const [key, fmt] of Object.entries(FORMATS)) {
+    if (!fmt.detect.length) continue;
     const score = fmt.detect.filter(d => hSet.has(d)).length;
-    if (score > bestScore) { bestScore = score; best = key; }
+    if (score > bestScore) { bestScore = score; bestTotal = fmt.detect.length; best = key; }
   }
-  return bestScore >= 2 ? best : null;
+  if (bestScore < 2) return { key: null, confidence: null };
+  const ratio = bestScore / bestTotal;
+  const confidence = ratio >= 1 ? '高' : ratio >= 0.6 ? '中' : '低';
+  return { key: best, confidence };
 }
 
 function guessAsUnknown(headers) {
@@ -897,12 +1150,14 @@ function processText(text, filename) {
   parsedData = parseCSV(text);
   if (!parsedData.rows.length) { showWarning('データが見つかりませんでした。ファイルを確認してください。'); return; }
   warningBox.style.display = 'none';
+  document.getElementById('drop-zone').classList.remove('idle');
 
-  detectedFormatKey = detectFormat(parsedData.headers);
+  const detected = detectFormat(parsedData.headers);
+  detectedFormatKey = detected.key;
   detectedInfo.className = detectedFormatKey ? '' : 'warn';
   detectedInfo.style.display = 'block';
   detectedInfo.textContent = detectedFormatKey
-    ? `「${FORMATS[detectedFormatKey].name}」を検出 — ${parsedData.rows.length}件`
+    ? `「${FORMATS[detectedFormatKey].name}」を検出 — ${parsedData.rows.length}件（信頼度: ${detected.confidence}）`
     : '⚠ ソフトを自動判定できませんでした。変換先を選択してください。';
   updateFormatButtons();
 
@@ -938,24 +1193,44 @@ function updateFormatButtons() {
   });
 }
 
-function updateConvertBtn() { convertBtn.disabled = !(parsedData && selectedFormatKey); }
+function updateConvertBtn() {
+  convertBtn.disabled = !(parsedData && selectedFormatKey);
+  convertBtn.classList.remove('loading', 'done');
+  convertBtn.innerHTML = '<span class="btn-spinner"></span>変換してプレビューを表示';
+}
 
 function doConvert() {
   if (!parsedData || !selectedFormatKey) return;
-  const srcFmt = detectedFormatKey ? FORMATS[detectedFormatKey] : guessAsUnknown(parsedData.headers);
-  const dstFmt = FORMATS[selectedFormatKey];
-  const convertedRows = parsedData.rows.map(row => fromUniversal(toUniversal(row, srcFmt), dstFmt));
-  convertedCSV = toCSV(dstFmt.headers, convertedRows);
+  convertBtn.classList.add('loading');
+  convertBtn.innerHTML = '<span class="btn-spinner"></span>変換中…';
+  convertBtn.disabled = true;
 
-  const visibleH = dstFmt.headers.filter(h => convertedRows.some(r => r[h])).slice(0, 12);
-  previewTable.innerHTML =
-    `<thead><tr>${visibleH.map(h => `<th>${h}</th>`).join('')}</tr></thead>` +
-    `<tbody>${convertedRows.map(r => `<tr>${visibleH.map(h => `<td>${r[h]||''}</td>`).join('')}</tr>`).join('')}</tbody>`;
+  setTimeout(() => {
+    const srcFmt = detectedFormatKey ? FORMATS[detectedFormatKey] : guessAsUnknown(parsedData.headers);
+    const dstFmt = FORMATS[selectedFormatKey];
+    const convertedRows = parsedData.rows.map(row => fromUniversal(toUniversal(row, srcFmt), dstFmt));
+    convertedCSV = toCSV(dstFmt.headers, convertedRows);
 
-  previewCount.textContent = convertedRows.length;
-  previewFormatTag.textContent = dstFmt.name;
-  previewSection.style.display = 'block';
-  previewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const visibleH = dstFmt.headers.filter(h => convertedRows.some(r => r[h])).slice(0, 12);
+    previewTable.innerHTML =
+      `<thead><tr>${visibleH.map(h => `<th>${h}</th>`).join('')}</tr></thead>` +
+      `<tbody>${convertedRows.map(r => `<tr>${visibleH.map(h => `<td>${r[h]||''}</td>`).join('')}</tr>`).join('')}</tbody>`;
+
+    previewCount.textContent = convertedRows.length;
+    previewFormatTag.textContent = dstFmt.name;
+    previewSection.style.display = 'block';
+    previewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    convertBtn.classList.remove('loading');
+    convertBtn.classList.add('done');
+    convertBtn.innerHTML = '✓ 変換完了';
+    convertBtn.disabled = false;
+
+    const dlBtn = document.getElementById('download-btn');
+    dlBtn.classList.remove('appear');
+    void dlBtn.offsetWidth;
+    dlBtn.classList.add('appear');
+  }, 150);
 }
 
 const FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSc5cMbflT-uHf-D0_xoo4IOxQVz5cOR-VQVeG3cJdPyWRPQqQ/formResponse';
