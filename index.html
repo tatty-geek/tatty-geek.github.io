@@ -14,6 +14,62 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="ふでコン — 年賀状ソフトの住所録を無料変換">
   <meta name="twitter:description" content="筆まめ・筆ぐるめ・筆王・はがきデザインキットなど年賀状ソフトの住所録CSVを無料で相互変換。OutlookやGmailへの書き出しにも対応。">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "ふでコン",
+    "description": "筆まめ・筆ぐるめ・筆王・はがきデザインキットなど年賀状ソフトの住所録CSVを無料で相互変換。OutlookやGmailへの書き出しにも対応。",
+    "url": "https://tatty-geek.github.io/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "inLanguage": "ja",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "対応している年賀状ソフトを教えてください",
+        "acceptedAnswer": { "@type": "Answer", "text": "筆まめ（デスクトップ版・クラウド版）、筆ぐるめ、筆王（Web版・デスクトップ版）、はがきデザインキット（2020〜2024年版）、宛名職人に対応しています。変換先としてOutlook（Windows連絡先）、Gmail（Googleコンタクト）、Excel汎用にも書き出せます。" }
+      },
+      {
+        "@type": "Question",
+        "name": "筆まめから筆ぐるめに住所録を移行できますか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "できます。筆まめで住所録をCSV形式で書き出し、ふでコンにアップロードして変換先を「筆ぐるめ」に選ぶだけで変換できます。筆ぐるめ→筆まめなど逆方向も同様に対応しています。" }
+      },
+      {
+        "@type": "Question",
+        "name": "GmailやOutlookに住所録をインポートできますか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "できます。変換先を「Gmail（Googleコンタクト）」または「Outlook / Windows連絡先」に選んでダウンロードし、各アプリの連絡先インポート機能から読み込むだけです。列名が英語になりますが、各アプリが自動で認識します。" }
+      },
+      {
+        "@type": "Question",
+        "name": "住所録に含まれる個人情報は安全ですか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "安全です。すべての変換処理はブラウザ内で完結するため、住所録データはサーバーに一切送信されません。データがパソコンの外に出ることはありません。" }
+      },
+      {
+        "@type": "Question",
+        "name": "無料で使えますか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "完全無料です。登録不要・件数制限なしでご利用いただけます。" }
+      },
+      {
+        "@type": "Question",
+        "name": "Shift-JISのCSVファイルも変換できますか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "できます。Shift-JIS形式とUTF-8形式のどちらも自動で判別して読み込みます。年賀状ソフトからエクスポートしたCSVはShift-JIS形式が多いですが、そのままお使いいただけます。" }
+      },
+      {
+        "@type": "Question",
+        "name": "ソフトが自動判定されない場合はどうすればいいですか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "変換先のソフトを手動で選択してください。自動判定できない場合でも変換は可能です。うまく変換できなかった場合はフィードバック機能からご報告いただけると今後の改善に活用いたします。" }
+      }
+    ]
+  }
+  </script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7399421628479973" crossorigin="anonymous"></script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ8STL0984"></script>
@@ -631,6 +687,41 @@
       margin-bottom: 2px;
     }
 
+    /* ── FAQ ── */
+    .faq-list { list-style: none; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-item:first-child { border-top: 1px solid var(--border); }
+    .faq-item details summary {
+      padding: 14px 4px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--ink);
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      user-select: none;
+    }
+    .faq-item details summary::-webkit-details-marker { display: none; }
+    .faq-item details summary::after {
+      content: '+';
+      font-family: 'Shippori Mincho B1', serif;
+      font-size: 1.3rem;
+      color: var(--accent);
+      flex-shrink: 0;
+      transition: transform 0.2s;
+      line-height: 1;
+    }
+    .faq-item details[open] summary::after { transform: rotate(45deg); }
+    .faq-answer {
+      padding: 2px 4px 16px;
+      font-size: 0.88rem;
+      color: var(--ink-muted);
+      line-height: 1.85;
+    }
+
     /* ── レスポンシブ ── */
     @media (max-width: 600px) {
       header { padding: 24px 20px 20px; }
@@ -821,6 +912,7 @@
       <span class="step-num">使い方</span>
       <span class="section-divider"></span>
     </div>
+    <p style="font-size:0.9rem; color:var(--ink-muted); margin-bottom:16px; line-height:1.8;">筆まめ・筆ぐるめ・筆王など年賀状ソフトの住所録CSVを、別のソフトやGmail・Outlookへ無料で変換できます。乗り換えや引っ越しの際の住所録データ移行にお使いください。</p>
     <ol class="howto-list">
       <li>年賀状ソフトで住所録をCSV形式でエクスポートする</li>
       <li>このページにCSVファイルをアップロードする（ソフトは自動判定）</li>
@@ -828,6 +920,58 @@
       <li>全件プレビューで内容を確認してからCSVをダウンロード</li>
       <li>ダウンロードしたCSVを変換先ソフトにインポートする</li>
     </ol>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section fade-up">
+    <div class="section-label">
+      <span class="step-num">よくある質問</span>
+      <span class="section-divider"></span>
+    </div>
+    <ul class="faq-list">
+      <li class="faq-item">
+        <details>
+          <summary>対応している年賀状ソフトを教えてください</summary>
+          <p class="faq-answer">筆まめ（デスクトップ版・クラウド版）、筆ぐるめ、筆王（Web版・デスクトップ版）、はがきデザインキット（2020〜2024年版）、宛名職人に対応しています。変換先としてOutlook（Windows連絡先）、Gmail（Googleコンタクト）、Excel汎用にも書き出せます。</p>
+        </details>
+      </li>
+      <li class="faq-item">
+        <details>
+          <summary>筆まめから筆ぐるめに住所録を移行できますか？</summary>
+          <p class="faq-answer">できます。筆まめで住所録をCSV形式で書き出し、ふでコンにアップロードして変換先を「筆ぐるめ」に選ぶだけで変換できます。筆ぐるめ→筆まめなど逆方向も同様に対応しています。</p>
+        </details>
+      </li>
+      <li class="faq-item">
+        <details>
+          <summary>GmailやOutlookに住所録をインポートできますか？</summary>
+          <p class="faq-answer">できます。変換先を「Gmail（Googleコンタクト）」または「Outlook / Windows連絡先」に選んでダウンロードし、各アプリの連絡先インポート機能から読み込むだけです。列名が英語になりますが、各アプリが自動で認識します。</p>
+        </details>
+      </li>
+      <li class="faq-item">
+        <details>
+          <summary>住所録に含まれる個人情報は安全ですか？</summary>
+          <p class="faq-answer">安全です。すべての変換処理はブラウザ内で完結するため、住所録データはサーバーに一切送信されません。データがパソコンの外に出ることはありません。</p>
+        </details>
+      </li>
+      <li class="faq-item">
+        <details>
+          <summary>無料で使えますか？</summary>
+          <p class="faq-answer">完全無料です。登録不要・件数制限なしでご利用いただけます。</p>
+        </details>
+      </li>
+      <li class="faq-item">
+        <details>
+          <summary>Shift-JISのCSVファイルも変換できますか？</summary>
+          <p class="faq-answer">できます。Shift-JIS形式とUTF-8形式のどちらも自動で判別して読み込みます。年賀状ソフトからエクスポートしたCSVはShift-JIS形式が多いですが、そのままお使いいただけます。</p>
+        </details>
+      </li>
+      <li class="faq-item">
+        <details>
+          <summary>ソフトが自動判定されない場合はどうすればいいですか？</summary>
+          <p class="faq-answer">変換先のソフトを手動で選択してください。自動判定できない場合でも変換は可能です。うまく変換できなかった場合はフィードバック機能からご報告いただけると今後の改善に活用いたします。</p>
+        </details>
+      </li>
+    </ul>
   </div>
 
 </main>
