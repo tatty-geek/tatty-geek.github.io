@@ -1315,10 +1315,14 @@ function processText(text, filename) {
   const upPrev = parsedData.rows.slice(0, 3);
   const upH = parsedData.headers.filter(h => upPrev.some(r => r[h])).slice(0, 8);
   uploadPreviewTable.innerHTML =
-    `<thead><tr>${upH.map(h => `<th>${h}</th>`).join('')}</tr></thead>` +
-    `<tbody>${upPrev.map(r => `<tr>${upH.map(h => `<td>${r[h]||''}</td>`).join('')}</tr>`).join('')}</tbody>`;
+    `<thead><tr>${upH.map(h => `<th>${escapeHtml(h)}</th>`).join('')}</tr></thead>` +
+    `<tbody>${upPrev.map(r => `<tr>${upH.map(h => `<td>${escapeHtml(r[h])}</td>`).join('')}</tr>`).join('')}</tbody>`;
   uploadPreviewCard.style.display = 'block';
   updateConvertBtn();
+}
+
+function escapeHtml(str) {
+  return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function showWarning(msg) { warningBox.textContent = msg; warningBox.style.display = 'block'; }
@@ -1357,8 +1361,8 @@ function doConvert() {
 
     const visibleH = dstFmt.headers.filter(h => convertedRows.some(r => r[h])).slice(0, 12);
     previewTable.innerHTML =
-      `<thead><tr>${visibleH.map(h => `<th>${h}</th>`).join('')}</tr></thead>` +
-      `<tbody>${convertedRows.map(r => `<tr>${visibleH.map(h => `<td>${r[h]||''}</td>`).join('')}</tr>`).join('')}</tbody>`;
+      `<thead><tr>${visibleH.map(h => `<th>${escapeHtml(h)}</th>`).join('')}</tr></thead>` +
+      `<tbody>${convertedRows.map(r => `<tr>${visibleH.map(h => `<td>${escapeHtml(r[h])}</td>`).join('')}</tr>`).join('')}</tbody>`;
 
     previewCount.textContent = convertedRows.length;
     previewFormatTag.textContent = dstFmt.name;
